@@ -32,13 +32,13 @@ function imageTemplate(image) {
   <img
   width='300'
   height='auto'
-  src=${image.url} 
-  alt=${image.alt}>
+  src='${image.url} '
+  alt='${image.alt}'>
   </li>`;
 }
 
 function imagesTemplate(images) {
-  return images.map(imageTemplate).join();
+  return images.map(imageTemplate).join("");
 }
 
 const markup = imagesTemplate(images);

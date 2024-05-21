@@ -4,48 +4,49 @@ function getRandomHexColor() {
     .padStart(6, 0)}`;
 }
 
-const divElem = document.querySelector("#controls");
+const divElem = document.querySelector("#boxes");
 const inputElem = document.querySelector("input");
-const createBtn = divElem.querySelector("button");
-const destroyBtn = divElem.querySelector("button:last-child");
-const divBoxElem = document.querySelector("#boxes");
+const destroyBtnElem = document.querySelector("div > button:last-child");
+const createBtnElem = document.querySelector("div > button");
 
-divBoxElem.style.display = "flex";
-divBoxElem.style.flexWrap = "wrap";
-divBoxElem.style.alignItems = "center";
-divBoxElem.style.marginTop = "30px";
+divElem.style.display = "flex";
+divElem.style.flexWrap = "wrap";
+divElem.style.alignItems = "center";
 
-createBtn.addEventListener("click", () => {
-  if (
-    Number(inputElem.value.trim()) > Number(inputElem.max) ||
-    Number(inputElem.value.trim()) < Number(inputElem.min)
-  ) {
-    alert("Please enter number from 1 to 100");
+createBtnElem.addEventListener("click", () => {
+  const value = inputElem.value;
+  if (value > 0 && value <= 100) {
+    createBoxes(value);
+    inputElem.value = "";
   } else {
-    createBoxes(inputElem.value.trim());
+    alert("Please enter number from 1 to 100");
   }
   inputElem.value = "";
 });
 
-destroyBtn.addEventListener("click", destroyBoxes);
+destroyBtnElem.addEventListener("click", (e) => {
+  divElem.innerHTML = "";
+});
 
-function destroyBoxes() {
-  divBoxElem.innerHTML = "";
-}
+const size = {
+  width: 30,
+  height: 30,
+};
 
 function createBoxes(amount) {
-  let size = 30;
-  const boxesArr = [];
-  for (let i = 0; i < amount; i += 1) {
-    size += 10 * i;
-    const div = `<div class="item" 
-    style="display: block;
-    margin-right: 30px;
-    margin-bottom: 30px;
-    background-color: ${getRandomHexColor()}; 
-    width: ${size}px; 
-    height: ${size}px;"></div>`;
-    boxesArr.push(div);
+  divElem.innerHTML = "";
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < amount; i++) {
+    const nevDiv = document.createElement("div");
+    size.width += 10;
+    size.height += 10;
+    nevDiv.style.width = `${size.width}px`;
+    nevDiv.style.height = `${size.height}px`;
+    nevDiv.style.background = getRandomHexColor();
+    nevDiv.style.margin = "5px";
+    fragment.appendChild(nevDiv);
   }
-  divBoxElem.insertAdjacentHTML("beforeend", boxesArr.join(""));
+  divElem.appendChild(fragment);
+  size.height = 30;
+  size.width = 30;
 }
